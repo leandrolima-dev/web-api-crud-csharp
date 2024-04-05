@@ -12,9 +12,33 @@ namespace WebApiBase.Services.FuncionarioService
             _context = context;
         }
 
-        public Task<ServiceResponse<List<FuncionarioModel>>> CreateFuncionario(FuncionarioModel novoFuncionario)
+        public async Task<ServiceResponse<List<FuncionarioModel>>> CreateFuncionario(FuncionarioModel novoFuncionario)
         {
-            throw new NotImplementedException();
+            ServiceResponse<List<FuncionarioModel>> serviceResponse = new ServiceResponse<List<FuncionarioModel>>();
+
+            try
+            {
+                if(novoFuncionario == null)
+                {
+                    serviceResponse.Dados = null;
+                    serviceResponse.Mensagem = "Informe os dados do funcionário";
+                    serviceResponse.Sucesso = false;
+                    return serviceResponse;
+                }
+
+                _context.Add(novoFuncionario);
+                await _context.SaveChangesAsync();
+
+                serviceResponse.Dados = await _context.Funcionarios.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Mensagem = ex.Message;
+                serviceResponse.Sucesso = false;
+            }
+
+            return serviceResponse;
+
         }
 
         public Task<ServiceResponse<List<FuncionarioModel>>> DeleteFuncionario(int id)
