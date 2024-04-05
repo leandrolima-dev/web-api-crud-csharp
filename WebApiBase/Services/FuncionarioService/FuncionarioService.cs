@@ -1,4 +1,5 @@
-﻿using WebApiBase.DataContext;
+﻿using Microsoft.EntityFrameworkCore;
+using WebApiBase.DataContext;
 using WebApiBase.Models;
 
 namespace WebApiBase.Services.FuncionarioService
@@ -26,9 +27,26 @@ namespace WebApiBase.Services.FuncionarioService
             throw new NotImplementedException();
         }
 
-        public Task<ServiceResponse<List<FuncionarioModel>>> GetFuncionarios()
+        public async Task<ServiceResponse<List<FuncionarioModel>>> GetFuncionarios()
         {
-            throw new NotImplementedException();
+            ServiceResponse<List<FuncionarioModel>> serviceResponse = new ServiceResponse<List<FuncionarioModel>>();
+
+            try
+            {
+                serviceResponse.Dados = await _context.Funcionarios.ToListAsync();
+
+                if(serviceResponse.Dados.Count == 0)
+                {
+                    serviceResponse.Mensagem = "Nenhum dado encontrado";
+                }
+
+            }catch(Exception ex)
+            {
+                serviceResponse.Mensagem = ex.Message;
+                serviceResponse.Sucesso = false;    
+            }
+
+            return serviceResponse;
         }
 
         public Task<ServiceResponse<List<FuncionarioModel>>> InactiveFuncionario(int id)
