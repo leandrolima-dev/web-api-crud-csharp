@@ -46,9 +46,30 @@ namespace WebApiBase.Services.FuncionarioService
             throw new NotImplementedException();
         }
 
-        public Task<ServiceResponse<FuncionarioModel>> GetFuncionarioById(int id)
+        public async Task<ServiceResponse<FuncionarioModel>> GetFuncionarioById(int id)
         {
-            throw new NotImplementedException();
+            ServiceResponse<FuncionarioModel> serviceResponse = new ServiceResponse<FuncionarioModel>();
+
+            try
+            {
+                FuncionarioModel? funcionario = await _context.Funcionarios.FirstOrDefaultAsync(x => x.Id == id);
+
+                if(funcionario == null)
+                {
+                    serviceResponse.Dados = null;
+                    serviceResponse.Mensagem = "Funcionário não encontrado";
+                    serviceResponse.Sucesso = false;
+                }
+
+                serviceResponse.Dados = funcionario;
+            }
+            catch (Exception ex)
+            {
+                serviceResponse.Mensagem = ex.Message;
+                serviceResponse.Sucesso = false;
+            }
+
+            return serviceResponse;
         }
 
         public async Task<ServiceResponse<List<FuncionarioModel>>> GetFuncionarios()
