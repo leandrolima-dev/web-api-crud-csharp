@@ -15,6 +15,14 @@ namespace WebApiBase.Models
         public DateTime DataCriacao { get; set; } = DateTime.Now.ToLocalTime();
         public DateTime DataAlteracao { get; set; } = DateTime.Now.ToLocalTime();
 
+        public FuncionarioModel(string nome, string sobrenome, DepartamentoEnum departamento, bool ativo, TurnoEnum turno)
+        {
+            Nome = nome;
+            Sobrenome = sobrenome;
+            Departamento = departamento;
+            Ativo = ativo;
+            Turno = turno;   
+        }
 
     }
 }
