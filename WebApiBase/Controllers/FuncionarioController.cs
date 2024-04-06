@@ -36,6 +36,14 @@ namespace WebApiBase.Controllers
             return Ok(await _fucionarioInterface.CreateFuncionario(novoFuncionario));
         }
 
+        [HttpPut("atualizaFuncionario")]
+        public async Task<ActionResult<ServiceResponse<List<FuncionarioModel>>>> UpdateFuncionario(FuncionarioModel editatoFuncionario)
+        {
+            ServiceResponse<List<FuncionarioModel>> serviceResponse = await _fucionarioInterface.UpdateFuncionario(editatoFuncionario);
+
+            return Ok(serviceResponse);
+        }
+
         [HttpPut("inativaFuncionario")]
         public async Task<ActionResult<ServiceResponse<List<FuncionarioModel>>>> InactiveFuncionario(int id)
         {

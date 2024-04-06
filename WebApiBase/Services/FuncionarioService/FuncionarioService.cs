@@ -129,9 +129,38 @@ namespace WebApiBase.Services.FuncionarioService
             return serviceResponse;
         }
 
-        public Task<ServiceResponse<List<FuncionarioModel>>> UpdateFuncionario(FuncionarioModel editatoFuncionario)
+        public async Task<ServiceResponse<List<FuncionarioModel>>> UpdateFuncionario(FuncionarioModel editatoFuncionario)
         {
-            throw new NotImplementedException();
+            ServiceResponse<List<FuncionarioModel>> serviceResponse = new ServiceResponse<List<FuncionarioModel>>();
+
+            try
+            {
+                FuncionarioModel? funcionario = _context.Funcionarios.AsNoTracking().FirstOrDefault(x => x.Id == editatoFuncionario.Id);
+
+                if (funcionario == null)
+                {
+                    serviceResponse.Dados = null;
+                    serviceResponse.Mensagem = "Funcionário não encontrado";
+                    serviceResponse.Sucesso = false;
+                    return serviceResponse;
+                }
+
+                funcionario.DataAlteracao = DateTime.Now.ToLocalTime();
+
+                _context.Funcionarios.Update(editatoFuncionario);
+                await _context.SaveChangesAsync();
+
+                serviceResponse.Dados = await _context.Funcionarios.ToListAsync();
+
+
+            }
+            catch(Exception ex)
+            {
+                serviceResponse.Mensagem = ex.Message;
+                serviceResponse.Sucesso = false;    
+            }
+
+            return serviceResponse;
         }
     }
 }
