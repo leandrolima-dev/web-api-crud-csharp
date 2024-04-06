@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using WebApiBase.Models;
 using WebApiBase.Services.FuncionarioService;
 
@@ -33,6 +34,14 @@ namespace WebApiBase.Controllers
         public async Task<ActionResult<ServiceResponse<FuncionarioModel>>> CreateFuncionario(FuncionarioModel novoFuncionario)
         {
             return Ok(await _fucionarioInterface.CreateFuncionario(novoFuncionario));
+        }
+
+        [HttpPut("inativaFuncionario")]
+        public async Task<ActionResult<ServiceResponse<List<FuncionarioModel>>>> InactiveFuncionario(int id)
+        {
+            ServiceResponse<List<FuncionarioModel>> serviceResponse = await _fucionarioInterface.InactiveFuncionario(id);
+
+            return Ok(serviceResponse);
         }
     }
 }
