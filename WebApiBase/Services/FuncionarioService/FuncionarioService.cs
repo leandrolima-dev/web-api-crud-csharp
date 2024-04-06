@@ -59,6 +59,7 @@ namespace WebApiBase.Services.FuncionarioService
                     serviceResponse.Dados = null;
                     serviceResponse.Mensagem = "Funcionário não encontrado";
                     serviceResponse.Sucesso = false;
+                    return serviceResponse;
                 }
 
                 serviceResponse.Dados = funcionario;
