@@ -51,5 +51,13 @@ namespace WebApiBase.Controllers
 
             return Ok(serviceResponse);
         }
+
+        [HttpDelete("deletaFuncionario")]
+        public async Task<ActionResult<ServiceResponse<List<FuncionarioModel>>>> DeleteFuncionario(int id)
+        {
+            ServiceResponse<List<FuncionarioModel>> serviceResponse = await _fucionarioInterface.DeleteFuncionario(id);
+
+            return Ok(serviceResponse);
+        }
     }
 }
